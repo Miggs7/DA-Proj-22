@@ -2,6 +2,7 @@
 #include <vector>
 #include<algorithm>
 #include <fstream>
+#include <cstring>
 
 class Encomendas{
     int volume;
@@ -33,26 +34,33 @@ class Carrinhas{
 
 
 
-bool comparaarvarrinhas(carrinhas a, carrinhas b){
+/*bool comparaarvarrinhas(carrinhas a, carrinhas b){
     return(a.pesoMax>=b.pesoMax &&  a.volMax>=b.volMax);
-}
+}*/
 
 
 int main() {
 
     std::string encomendasfile("encomendas.txt");
     std::string line;
-    char* vol;
-    char* peso;
-    char* duracao;
-    char* custo;
-    char** recompensa;
-    std::vector<carrinhas> carr;
+    int vol;
+    int peso;
+    int duracao;
+    int custo;
+    int recompensa;
+    //std::vector<carrinhas> carr;
     std::ifstream input_file(encomendasfile);
     if(!input_file.is_open()){
         std::cout<<"Erro ao abrir o ficheiro "<<encomendasfile<<std::endl;
     }
     while(std::getline(input_file,line)){
+        char *dup = strdup(line.c_str());
+        vol = atoi(strtok(dup," "));
+        peso = atoi(strtok(NULL," "));
+        duracao = atoi(strtok(NULL," "));
+        free(dup);
+        std::cout << vol << " " << peso << " " <<  duracao <<std::endl;
+        //Carrinhas temp = new Carrinhas(vol,peso,duracao);
 
     }
 }
@@ -70,4 +78,4 @@ int main() {
      *  Ordenar as encomendas de forma crescente/decrescente da duração e basta enviar essas encomendas no container pedido
 
     return 0;
-}
+}*/
