@@ -2,22 +2,34 @@
 #include <vector>
 #include<algorithm>
 #include <fstream>
-struct encomendas{
-    int vol;
+
+class Encomendas{
+    int volume;
     int peso;
     int recom;
-    int dur;
+    int durar;
+    public:
+        Encomendas(int v,int p,int r,int d){
+            volume = v;
+            peso = p;
+            recom = r;
+            durar = d;
+        }
+};
 
-}encomenda;
-
-
-struct carrinhas{
+class Carrinhas{
     int volMax;
     int pesoMax;
     int custo;
     int volatual;
     int pesoatual;
-}carrinha;
+    public:
+        Carrinhas(int v,int p,int c){
+            volMax = v;
+            pesoMax = p;
+            custo = c;
+        }
+};
 
 
 
