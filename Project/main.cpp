@@ -16,6 +16,18 @@ class Encomendas{
             recom = r;
             durar = d;
         }
+        int getVol(){
+            return volume;
+        }
+        int getPeso(){
+            return peso;
+        }
+        int getRecomp(){
+            return recom;
+        }
+        int getDurar(){
+            return durar;
+        }
 };
 
 class Carrinhas{
@@ -29,6 +41,21 @@ class Carrinhas{
             volMax = v;
             pesoMax = p;
             custo = c;
+        }
+        int getVolMax(){
+            return volMax;
+        }
+        int getPesoMax(){
+            return pesoMax;
+        }
+        int getCusto(){
+            return custo;
+        }
+        int getVolatual(){
+            return volatual;
+        }
+        int getPesoAtual(){
+            return pesoatual;
         }
 };
 
@@ -49,19 +76,22 @@ int main() {
     int custo;
     int recompensa;
     //std::vector<carrinhas> carr;
+    std::vector<Encomendas> enco;
     std::ifstream input_file(encomendasfile);
     if(!input_file.is_open()){
         std::cout<<"Erro ao abrir o ficheiro "<<encomendasfile<<std::endl;
     }
+
     while(std::getline(input_file,line)){
         char *dup = strdup(line.c_str());
         vol = atoi(strtok(dup," "));
         peso = atoi(strtok(NULL," "));
+        recompensa = atoi(strtok(NULL," "));
         duracao = atoi(strtok(NULL," "));
         free(dup);
-        std::cout << vol << " " << peso << " " <<  duracao <<std::endl;
-        //Carrinhas temp = new Carrinhas(vol,peso,duracao);
-
+        //std::cout << vol << " " << peso << " " << recompensa << " " << duracao <<std::endl;
+        Encomendas temp(vol,peso,recompensa,duracao);
+        enco.push_back(temp);
     }
 }
     //1)
