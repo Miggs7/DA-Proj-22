@@ -4,6 +4,8 @@
 #include <fstream>
 #include <cstring>
 
+using namespace std;
+
 class Encomendas{
     int volume;
     int peso;
@@ -59,7 +61,17 @@ class Carrinhas{
         }
 };
 
+void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> carrinhas){
+    vector<int> weight;
+    vector<int> volume;
 
+    for(auto x: enco){
+        weight.push_back(x.getPeso());
+        volume.push_back(x.getVol());
+    }
+
+
+}
 
 /*bool comparaarvarrinhas(carrinhas a, carrinhas b){
     return(a.pesoMax>=b.pesoMax &&  a.volMax>=b.volMax);
@@ -68,31 +80,54 @@ class Carrinhas{
 
 int main() {
 
-    std::string encomendasfile("encomendas.txt");
-    std::string line;
-    int vol;
-    int peso;
-    int duracao;
-    int custo;
-    int recompensa;
+    string encomendasfile("encomendas.txt");
+    string carrinhasfile("carrinhas.txt");
+    string line;
+    int n = 0;
     //std::vector<carrinhas> carr;
-    std::vector<Encomendas> enco;
-    std::ifstream input_file(encomendasfile);
+    vector<Encomendas> enco;
+    vector<Carrinhas> truck;
+    ifstream input_file(encomendasfile);
+
     if(!input_file.is_open()){
-        std::cout<<"Erro ao abrir o ficheiro "<<encomendasfile<<std::endl;
+        cout<<"Erro ao abrir o ficheiro "<<encomendasfile<<endl;
     }
 
+    //leitura encomendas
     while(std::getline(input_file,line)){
-        char *dup = strdup(line.c_str());
-        vol = atoi(strtok(dup," "));
-        peso = atoi(strtok(NULL," "));
-        recompensa = atoi(strtok(NULL," "));
-        duracao = atoi(strtok(NULL," "));
-        free(dup);
-        //std::cout << vol << " " << peso << " " << recompensa << " " << duracao <<std::endl;
-        Encomendas temp(vol,peso,recompensa,duracao);
-        enco.push_back(temp);
+        if(n != 0){
+            char *dup = strdup(line.c_str());
+            int vol = atoi(strtok(dup," "));
+            int peso = atoi(strtok(NULL," "));
+            int recompensa = atoi(strtok(NULL," "));
+            int duracao = atoi(strtok(NULL," "));
+            free(dup);
+            //std::cout << vol << " " << peso << " " << recompensa << " " << duracao <<std::endl;
+            Encomendas temp(vol,peso,recompensa,duracao);
+            enco.push_back(temp);
+        }
+        n++;
     }
+
+    //leitura carrinhas
+    std::ifstream input_file2(carrinhasfile);
+    n = 0;
+
+    while(std::getline(input_file2,line)){
+        if(n != 0){
+            char *dup = strdup(line.c_str());
+            int volMax = atoi(strtok(dup," "));
+            int pesoMax = atoi(strtok(NULL," "));
+            int custo  = atoi(strtok(NULL," "));
+            free(dup);
+            //std::cout << volMax << " " << pesoMax << " " << custo << " " <<std::endl;
+            Carrinhas temp2(volMax,pesoMax,custo);
+            truck.push_back(temp2);
+        }
+        n++;
+    }
+
+    return 0;
 }
     //1)
     /*Minimizar estafetas: ordenar o vetor das carrinhas e tentar fazer a cenas da mochila para as encomendas
