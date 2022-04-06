@@ -59,6 +59,12 @@ class Carrinhas{
         int getPesoAtual(){
             return pesoatual;
         }
+        void setPesoAtual(int addedpeso){
+            this->pesoatual+=addedpeso;
+        }
+        void setVolAtual(int addedvol){
+            this->volatual+=addedvol;
+        }
 };
 
 void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> truck){
@@ -80,10 +86,35 @@ void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> truck){
 
 }
 
-/*bool comparaarvarrinhas(carrinhas a, carrinhas b){
-    return(a.pesoMax>=b.pesoMax &&  a.volMax>=b.volMax);
-}*/
+bool comparaarvarrinhas(Carrinhas a, Carrinhas b){
+    return(a.getPesoMax()>=b.getPesoMax() &&  a.getVolMax()>=b.getVolMax());
+}
 
+int preenchertruck(Carrinhas& truck,vector<Encomendas>& encos,vector<vector<int>>& Estafetas,vector<vector<int>>& Pedidos,int &temp){
+    if(encos.empty() || temp==86400 ) //A função retorna se já não houver encomendas ou já tenham passado 24horas
+        return 1;
+
+    for(int i=0; i<encos.size();i++){
+        if()
+
+
+    }
+
+
+    return 0;
+}
+
+
+void escolhertruck(vector<Encomendas>& encos, vector<Carrinhas> trucks,vector<vector<int>>& Estafetas,vector<vector<int>>& Pedidos){
+    int temp=0;
+
+    for(auto truck : trucks) {
+        if(preenchertruck(truck,encos,Estafetas,Pedidos,temp)==1)
+            return;
+    }
+
+    return;
+}
 
 int main() {
 
@@ -127,6 +158,11 @@ int main() {
             truck.push_back(temp2);
         maxEstafeta(enco,truck);
     }
+    std::sort(truck.begin(),truck.end(), comparaarvarrinhas);
+
+    vector<vector<int>> Estafetas;
+    vector<vector<int>> Pedidos;
+
 
     return 0;
 }
