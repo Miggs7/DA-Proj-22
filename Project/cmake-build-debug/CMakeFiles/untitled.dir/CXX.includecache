@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/pedro/OneDrive/Documentos/GitHub/DA-Proj-22/Project/main.cpp
+iostream
+-
+vector
+-
+algorithm
+-
+fstream
+-
+cstring
+-
+

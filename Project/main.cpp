@@ -90,7 +90,6 @@ int main() {
     string encomendasfile("encomendas.txt");
     string carrinhasfile("carrinhas.txt");
     string line;
-    int n = 0;
     //std::vector<carrinhas> carr;
     vector<Encomendas> enco;
     vector<Carrinhas> truck;
@@ -102,26 +101,22 @@ int main() {
 
     //leitura encomendas
     while(std::getline(input_file,line)){
-        if(n != 0){
             char *dup = strdup(line.c_str());
             int vol = atoi(strtok(dup," "));
             int peso = atoi(strtok(NULL," "));
             int recompensa = atoi(strtok(NULL," "));
             int duracao = atoi(strtok(NULL," "));
             free(dup);
-            //std::cout << vol << " " << peso << " " << recompensa << " " << duracao <<std::endl;
+            std::cout << vol << " " << peso << " " << recompensa << " " << duracao <<std::endl;
             Encomendas temp(vol,peso,recompensa,duracao);
             enco.push_back(temp);
-        }
-        n++;
     }
 
     //leitura carrinhas
     std::ifstream input_file2(carrinhasfile);
-    n = 0;
+
 
     while(std::getline(input_file2,line)){
-        if(n != 0){
             char *dup = strdup(line.c_str());
             int volMax = atoi(strtok(dup," "));
             int pesoMax = atoi(strtok(NULL," "));
@@ -130,9 +125,6 @@ int main() {
             //std::cout << volMax << " " << pesoMax << " " << custo << " " <<std::endl;
             Carrinhas temp2(volMax,pesoMax,custo);
             truck.push_back(temp2);
-        }
-        n++;
-
         maxEstafeta(enco,truck);
     }
 
