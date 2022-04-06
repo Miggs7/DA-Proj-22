@@ -61,13 +61,20 @@ class Carrinhas{
         }
 };
 
-void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> carrinhas){
+void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> truck){
     vector<int> weight;
     vector<int> volume;
+    vector<int> volumeTruck;
+    vector<int> weightTruck;
 
     for(auto x: enco){
         weight.push_back(x.getPeso());
         volume.push_back(x.getVol());
+    }
+
+    for(auto y: truck){
+        volumeTruck.push_back(y.getVolMax());
+        weightTruck.push_back(y.getPesoAtual());
     }
 
 
@@ -125,6 +132,8 @@ int main() {
             truck.push_back(temp2);
         }
         n++;
+
+        maxEstafeta(enco,truck);
     }
 
     return 0;
