@@ -67,7 +67,7 @@ class Carrinhas{
         }
 };
 
-void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> truck){
+/*void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> truck){
     vector<int> weight;
     vector<int> volume;
     vector<int> volumeTruck;
@@ -84,7 +84,7 @@ void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> truck){
     }
 
 
-}
+}*/
 
 bool comparaarvarrinhas(Carrinhas a, Carrinhas b){
     return(a.getPesoMax()>=b.getPesoMax() &&  a.getVolMax()>=b.getVolMax());
