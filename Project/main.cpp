@@ -94,11 +94,11 @@ int preenchertruck(Carrinhas& truck,vector<Encomendas>& encos,vector<vector<int>
         return 1;
 
     for(int i=0; i<encos.size();i++){
-        int tempV = encos.getVol();
-        int tempW = encos.getPeso();
-        if(tempV+getVolatual()<= getVolMax() && tempW+getPesoVolatual() <= getPesoMax()){
-            setPesoAtual(tempW);
-            setVolAtual(tempV);
+        int tempV = encos.at(i).getVol();
+        int tempW = encos.at(i).getPeso();
+        if(tempV+truck.getVolatual()<= truck.getVolMax() && tempW+truck.getPesoAtual() <= truck.getPesoMax()){
+            truck.setPesoAtual(tempW);
+            truck.setVolAtual(tempV);
             encos.erase(encos.begin()+i);
         }
     }
