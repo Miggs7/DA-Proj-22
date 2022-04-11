@@ -87,7 +87,6 @@ public:
 };
 
 bool compararCarrinhas(Carrinha a, Carrinha b){
-    //return(a.getPesoMax()>=b.getPesoMax() &&  a.getVolMax()>=b.getVolMax());
     return (a.getVolMax()+a.getPesoMax())>=(b.getVolMax()+b.getPesoMax());
 }
 
@@ -99,15 +98,12 @@ int preenchertruck(Carrinha& truck,Encomenda& encos){
     int tempV = encos.getVol();
     int tempW = encos.getPeso();
 
-   /* if(((tempV+truck.getVolatual()) > truck.getVolMax() || (tempW+truck.getPesoAtual() )> truck.getPesoMax())){ // casos base
-        return 0;
-    }
-*/
     if((truck.getVolatual()-tempV)>=0 && (truck.getPesoAtual()-tempW)>=0){
         truck.setPesoAtual(tempW);
         truck.setVolAtual(tempV);
         return 1;
     }
+
 
     return 0;
 }
@@ -131,16 +127,7 @@ int escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<Esta
                     flag=1;
                 }
             }
-       /* for(std::vector<Encomenda>::iterator itr=encos.begin();itr!=encos.end();1==1){
-            if(preenchertruck(truck,*itr)==1){
-                EstafetaouPedido encomendausada((*itr).getPeso(),(*itr).getVol()); //Serve para inserir nos pedidos
-                pedidos.push_back(encomendausada);
-                encos.erase(itr);
-                flag=1;
-            }
-            else
-                ++itr;
-        }*/
+
         if(flag==1){
             EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
             estafetas.push_back(temp);
@@ -203,7 +190,6 @@ int main() {
     for (int i=0; i<Estafetas.size();i++){
         pp+=Estafetas.at(i).getPeso();
         vv+=Estafetas.at(i).getVol();
-       // cout<<"Estafeta: "<<i+1<<" Peso:"<<Estafetas.at(i).getPeso()<<" Vol: "<<Estafetas.at(i).getVol()<<endl;
         ra++;
     }
     cout<<"Estafetas "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<endl;
@@ -214,9 +200,7 @@ int main() {
    for (int i = 0; i < Pedidos.size(); i++) {
        pp+=Pedidos.at(i).getPeso();
        vv+=Pedidos.at(i).getVol();
-    //   cout<<"Pedido: "<<i+1<<" Peso:"<<Pedidos.at(i).getPeso()<<" Vol: "<<Pedidos.at(i).getVol()<<endl;
-        te++;
-
+       te++;
     }
     cout<<"Nº Pedido "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<endl;
 
