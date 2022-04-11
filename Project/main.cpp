@@ -1,6 +1,4 @@
 #include <iostream>
-
-#include <iostream>
 #include <vector>
 #include<algorithm>
 #include <fstream>
@@ -33,7 +31,21 @@ public:
         return durar;
     }
 };
-
+class EstafetaouPedido{
+    int vol;
+    int peso;
+public:
+    EstafetaouPedido(int pe,int v){
+        vol=v;
+        peso=pe;
+    }
+    int const getVol(){
+        return vol;
+    }
+    int const getPeso(){
+        return peso;
+    }
+};
 class Carrinha{
     int volMax;
     int pesoMax;
@@ -74,7 +86,7 @@ bool compararCarrinhas(Carrinha a, Carrinha b){
 }
 
 bool compararEnc(Encomenda a, Encomenda b){
-    return(a.getPeso()>=b.getPeso() &&  a.getVol()>=b.getVol());
+    return((a.getPeso()+a.getVol()+a.getDurar())<=(b.getPeso()+b.getVol()+b.getDurar()));
 }
 
 int preenchertruck(Carrinha truck,Encomenda encos,int time){
@@ -94,19 +106,25 @@ int preenchertruck(Carrinha truck,Encomenda encos,int time){
 }
 
 
-int escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks){
+int escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<EstafetaouPedido>& pedidos,vector<EstafetaouPedido>& estafeta ){
     int count = 0;
-
+    int t = 0;
     for(auto truck : trucks) {
-        int t = 0;
+       // t=0;
         if(encos.empty()) break;
-        for(int i = 1; i <= (int) encos.size(); i++){
-            if(preenchertruck(truck,encos[i],t) == 1){
-                t += encos[i].getDurar();
-                encos.erase(encos.begin()+i-1);
+        if(t>=86400)
+            break;
+        for(int i = 0; i < (int) encos.size(); i++){
+            if(preenchertruck(truck,encos.at(i),t) == 1){
+                t += encos.at(i).getDurar();
+                EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol());
+                pedidos.push_back(encomendausada);
+                encos.erase(encos.begin()+i);
                 i--;
             }
         }
+        EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax());
+        estafeta.push_back(temp);
         count++;
     }
     return count;
@@ -154,9 +172,22 @@ int main() {
 
     std::sort(truck.begin(),truck.end(), compararCarrinhas);
     std::sort(enco.begin(),enco.end(), compararEnc);
-
-    cout << escolhertruck(enco,truck) << endl;
-
-
+    int sum=0;
+    for (int i = 0; i < enco.size(); i++) {
+        sum+=enco.at(i).getDurar();
+        }
+    cout<<"TEmpo total: "<<sum<<endl;
+    vector<EstafetaouPedido> Estafetas;
+    vector<EstafetaouPedido> Pedidos;
+    cout<<"Encos "<<enco[0].getPeso()<<endl;
+    cout << escolhertruck(enco,truck,Pedidos,Estafetas) << endl;
+    for (int i=0; i<Estafetas.size();i++){
+        cout<<"Estafeta "<<i+1<<" Peso:"<<Estafetas.at(i).getPeso()<<" Vol:"<<Estafetas.at(i).getVol()<<endl;
+    }
+    int te=0;
+   for (int i = 0; i < Pedidos.size(); i++) {
+        te++;
+    }
+    cout<<"Pedido "<<te<<endl;
     return 0;
 }

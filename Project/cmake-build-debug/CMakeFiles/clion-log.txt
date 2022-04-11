@@ -1,0 +1,4 @@
+Cannot generate into C:\Users\pedro\OneDrive\Documentos\GitHub\DA-Proj-22\Project
+It is already used for project C:\Users\Miguel\Desktop\Projects\DA-Proj-22\Project
+
+Please either delete it manually or select another generation directory
