@@ -91,13 +91,18 @@ bool comparaarvarrinhas(Carrinhas a, Carrinhas b){
 }
 
 int preenchertruck(Carrinhas& truck,vector<Encomendas>& encos,vector<vector<int>>& Estafetas,vector<vector<int>>& Pedidos,int &temp){
+
     if(encos.empty() || temp==86400 ) //A função retorna se já não houver encomendas ou já tenham passado 24horas
         return 1;
 
     for(int i=0; i<encos.size();i++){
-        if()
-
-
+        int tempV = encos.volume;
+        int tempW = encos.peso;
+        if(tempV+getVolatual()<= getVolMax() && tempW+getPesoVolatual() <= getPesoMax()){
+            setPesoAtual(tempW);
+            setVolAtual(tempV);
+            encos.erase(encos.begin()+i);
+        }
     }
 
 
