@@ -93,13 +93,16 @@ int preenchertruck(Carrinhas& truck,vector<Encomendas>& encos,vector<vector<int>
     if(encos.empty() || temp==86400 ) //A função retorna se já não houver encomendas ou já tenham passado 24horas
         return 1;
 
-    for(int i=0; i< (int) encos.size();i++){
+    for(int i=1; i<encos.size();i++){
         int tempV = encos.at(i).getVol();
         int tempW = encos.at(i).getPeso();
         if(tempV+truck.getVolatual()<= truck.getVolMax() && tempW+truck.getPesoAtual() <= truck.getPesoMax()){
-            truck.setPesoAtual(tempW);
-            truck.setVolAtual(tempV);
-            encos.erase(encos.begin()+i);
+            if(encos.at(i).getDurar()>encos.at(i-1).getDurar()){
+                truck.setPesoAtual(encos.at(i-1).getPeso());
+                truck.setVolAtual(encos.at(i-1).getVol());
+                encos.erase(encos.begin()+i-1);
+            }
+
         }
     }
 
