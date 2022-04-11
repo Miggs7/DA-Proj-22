@@ -6,119 +6,136 @@
 
 using namespace std;
 
-class Encomendas{
+class Encomenda{
     int volume;
     int peso;
     int recom;
     int durar;
-    public:
-        Encomendas(int v,int p,int r,int d){
-            volume = v;
-            peso = p;
-            recom = r;
-            durar = d;
-        }
-        int getVol(){
-            return volume;
-        }
-        int getPeso(){
-            return peso;
-        }
-        int getRecomp(){
-            return recom;
-        }
-        int getDurar(){
-            return durar;
-        }
+public:
+    Encomenda(int v,int p,int r,int d){
+        volume = v;
+        peso = p;
+        recom = r;
+        durar = d;
+    }
+    int getVol(){
+        return volume;
+    }
+    int getPeso(){
+        return peso;
+    }
+    int getRecomp(){
+        return recom;
+    }
+    int getDurar(){
+        return durar;
+    }
 };
+class EstafetaouPedido{
+    int vol;
+    int peso;
+public:
+    EstafetaouPedido(int pe,int v){
+        vol=v;
+        peso=pe;
 
-class Carrinhas{
+    }
+
+    int const getVol(){
+        return vol;
+    }
+    int const getPeso(){
+        return peso;
+    }
+
+};
+class Carrinha{
     int volMax;
     int pesoMax;
     int custo;
     int volatual;
     int pesoatual;
-    public:
-        Carrinhas(int v,int p,int c){
-            volMax = v;
-            pesoMax = p;
-            custo = c;
-        }
-        int getVolMax(){
-            return volMax;
-        }
-        int getPesoMax(){
-            return pesoMax;
-        }
-        int getCusto(){
-            return custo;
-        }
-        int getVolatual(){
-            return volatual;
-        }
-        int getPesoAtual(){
-            return pesoatual;
-        }
-        void setPesoAtual(int addedpeso){
-            this->pesoatual+=addedpeso;
-        }
-        void setVolAtual(int addedvol){
-            this->volatual+=addedvol;
-        }
+public:
+    Carrinha(int v,int p,int c){
+        volMax = v;
+        pesoMax = p;
+        custo = c;
+        volatual=v;
+        pesoatual=p;
+    }
+    int getVolMax(){
+        return volMax;
+    }
+    int getPesoMax(){
+        return pesoMax;
+    }
+    int getCusto(){
+        return custo;
+    }
+    int getVolatual(){
+        return volatual;
+    }
+    int getPesoAtual(){
+        return pesoatual;
+    }
+    void setPesoAtual(int addedpeso){
+        pesoatual=pesoatual-addedpeso;
+    }
+    void setVolAtual(int addedvol){
+        volatual=volatual-addedvol;
+    }
 };
 
-/*void maxEstafeta(vector<Encomendas> enco, vector<Carrinhas> truck){
-    vector<int> weight;
-    vector<int> volume;
-    vector<int> volumeTruck;
-    vector<int> weightTruck;
-
-    for(auto x: enco){
-        weight.push_back(x.getPeso());
-        volume.push_back(x.getVol());
-    }
-
-    for(auto y: truck){
-        volumeTruck.push_back(y.getVolMax());
-        weightTruck.push_back(y.getPesoAtual());
-    }
-}*/
-
-bool comparaarvarrinhas(Carrinhas a, Carrinhas b){
-    return(a.getPesoMax()>=b.getPesoMax() &&  a.getVolMax()>=b.getVolMax());
+bool compararCarrinhas(Carrinha a, Carrinha b){
+    return (a.getVolMax()+a.getPesoMax())>=(b.getVolMax()+b.getPesoMax());
 }
 
-int preenchertruck(Carrinhas& truck,vector<Encomendas>& encos,vector<vector<int>>& Estafetas,vector<vector<int>>& Pedidos,int &temp){
+bool compararEnc(Encomenda a, Encomenda b){
+    return((a.getPeso()+a.getVol())>=(b.getPeso()+b.getVol()));
+}
 
-    if(encos.empty() || temp==86400 ) //A função retorna se já não houver encomendas ou já tenham passado 24horas
+int preenchertruck(Carrinha& truck,Encomenda& encos){
+    int tempV = encos.getVol();
+    int tempW = encos.getPeso();
+
+    if((truck.getVolatual()-tempV)>=0 && (truck.getPesoAtual()-tempW)>=0){
+        truck.setPesoAtual(tempW);
+        truck.setVolAtual(tempV);
         return 1;
-
-    for(int i=1; i<encos.size();i++){
-        int tempV = encos.at(i).getVol();
-        int tempW = encos.at(i).getPeso();
-        if(tempV+truck.getVolatual()<= truck.getVolMax() && tempW+truck.getPesoAtual() <= truck.getPesoMax()){
-            if(encos.at(i).getDurar()>encos.at(i-1).getDurar()){
-                truck.setPesoAtual(encos.at(i-1).getPeso());
-                truck.setVolAtual(encos.at(i-1).getVol());
-                encos.erase(encos.begin()+i-1);
-            }
-
-        }
     }
+
 
     return 0;
 }
 
 
-void escolhertruck(vector<Encomendas>& encos, vector<Carrinhas> trucks,vector<vector<int>>& Estafetas,vector<vector<int>>& Pedidos){
-    int temp=0;
+int escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<EstafetaouPedido>& pedidos,vector<EstafetaouPedido>& estafetas ){
+    int count = 0;
+    int t = 0;
+    int flag=0;
 
     for(auto truck : trucks) {
-        if(preenchertruck(truck,encos,Estafetas,Pedidos,temp)==1)
-            return;
-    }
+       flag=0;
+        if(encos.empty())
+            break;
+        for(int i = 0; i < (int) encos.size(); i++){
+                if(preenchertruck(truck,encos.at(i)) == 1){
+                   EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
+                    pedidos.push_back(encomendausada);
+                    encos.erase(encos.begin()+i);
+                    i--;
+                    flag=1;
+                }
+            }
 
-    return;
+        if(flag==1){
+            EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
+            estafetas.push_back(temp);
+            count++;
+            continue;
+        }
+    }
+    return count;
 }
 
 int main() {
@@ -126,9 +143,9 @@ int main() {
     string encomendasfile("encomendas.txt");
     string carrinhasfile("carrinhas.txt");
     string line;
-    //std::vector<carrinhas> carr;
-    vector<Encomendas> enco;
-    vector<Carrinhas> truck;
+
+    vector<Encomenda> encos;
+    vector<Carrinha> trucks;
     ifstream input_file(encomendasfile);
 
     if(!input_file.is_open()){
@@ -137,15 +154,14 @@ int main() {
 
     //leitura encomendas
     while(std::getline(input_file,line)){
-            char *dup = strdup(line.c_str());
-            int vol = atoi(strtok(dup," "));
-            int peso = atoi(strtok(NULL," "));
-            int recompensa = atoi(strtok(NULL," "));
-            int duracao = atoi(strtok(NULL," "));
-            free(dup);
-            std::cout << vol << " " << peso << " " << recompensa << " " << duracao <<std::endl;
-            Encomendas temp(vol,peso,recompensa,duracao);
-            enco.push_back(temp);
+        char *dup = strdup(line.c_str());
+        int vol = atoi(strtok(dup," "));
+        int peso = atoi(strtok(NULL," "));
+        int recompensa = atoi(strtok(NULL," "));
+        int duracao = atoi(strtok(NULL," "));
+        free(dup);
+        Encomenda temp(vol,peso,recompensa,duracao);
+        encos.push_back(temp);
     }
 
     //leitura carrinhas
@@ -153,36 +169,40 @@ int main() {
 
 
     while(std::getline(input_file2,line)){
-            char *dup = strdup(line.c_str());
-            int volMax = atoi(strtok(dup," "));
-            int pesoMax = atoi(strtok(NULL," "));
-            int custo  = atoi(strtok(NULL," "));
-            free(dup);
-            //std::cout << volMax << " " << pesoMax << " " << custo << " " <<std::endl;
-            Carrinhas temp2(volMax,pesoMax,custo);
-            truck.push_back(temp2);
-        //maxEstafeta(enco,truck);
+        char *dup = strdup(line.c_str());
+        int volMax = atoi(strtok(dup," "));
+        int pesoMax = atoi(strtok(NULL," "));
+        int custo  = atoi(strtok(NULL," "));
+        free(dup);
+        Carrinha temp2(volMax,pesoMax,custo);
+        trucks.push_back(temp2);
     }
-    std::sort(truck.begin(),truck.end(), comparaarvarrinhas);
 
-    vector<vector<int>> Estafetas;
-    vector<vector<int>> Pedidos;
+    std::sort(trucks.begin(),trucks.end(), compararCarrinhas);
+    std::sort(encos.begin(),encos.end(), compararEnc);
 
+    vector<EstafetaouPedido> Estafetas;
+    vector<EstafetaouPedido> Pedidos;
+    cout << escolhertruck(encos,trucks,Pedidos,Estafetas) << endl;
+    int pp=0;
+    int vv=0;
+    int ra=0;
+    for (int i=0; i<Estafetas.size();i++){
+        pp+=Estafetas.at(i).getPeso();
+        vv+=Estafetas.at(i).getVol();
+        ra++;
+    }
+    cout<<"Estafetas "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<endl;
+    int te=0;
+    pp=0;
+    vv=0;
+
+   for (int i = 0; i < Pedidos.size(); i++) {
+       pp+=Pedidos.at(i).getPeso();
+       vv+=Pedidos.at(i).getVol();
+       te++;
+    }
+    cout<<"Nº Pedido "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<endl;
 
     return 0;
 }
-    //1)
-    /*Minimizar estafetas: ordenar o vetor das carrinhas e tentar fazer a cenas da mochila para as encomendas
-     *                      sendo o weight das encomendas o peso e volume delas e o value delas a sua duração
-     *                      e tentamos diminuir a duração
-     *
-    */
-    // 2)
-    /*  Ordenar as encomendas de forma decrescente da recompensa e as carrinhas de forma crescente de custo
-     *  https://www.geeksforgeeks.org/job-sequencing-problem/
-     *
-     *  3)
-     *  Ordenar as encomendas de forma crescente/decrescente da duração e basta enviar essas encomendas no container pedido
-
-    return 0;
-}*/

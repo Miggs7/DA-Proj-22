@@ -1,3 +1,0 @@
-/mnt/c/Users/pedro/OneDrive/Documentos/GitHub/DA-Proj-22/Project/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Users/pedro/OneDrive/Documentos/GitHub/DA-Proj-22/Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/pedro/OneDrive/Documentos/GitHub/DA-Proj-22/Project/cmake-build-debug/CMakeFiles/untitled.dir
