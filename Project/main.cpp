@@ -82,8 +82,6 @@ class Carrinhas{
         volumeTruck.push_back(y.getVolMax());
         weightTruck.push_back(y.getPesoAtual());
     }
-
-
 }*/
 
 bool comparaarvarrinhas(Carrinhas a, Carrinhas b){
@@ -96,15 +94,14 @@ int preenchertruck(Carrinhas& truck,vector<Encomendas>& encos,vector<vector<int>
         return 1;
 
     for(int i=0; i<encos.size();i++){
-        int tempV = encos.volume;
-        int tempW = encos.peso;
+        int tempV = encos.getVol();
+        int tempW = encos.getPeso();
         if(tempV+getVolatual()<= getVolMax() && tempW+getPesoVolatual() <= getPesoMax()){
             setPesoAtual(tempW);
             setVolAtual(tempV);
             encos.erase(encos.begin()+i);
         }
     }
-
 
     return 0;
 }
