@@ -87,11 +87,12 @@ public:
 };
 
 bool compararCarrinhas(Carrinha a, Carrinha b){
-    return(a.getPesoMax()>=b.getPesoMax() &&  a.getVolMax()>=b.getVolMax());
+    //return(a.getPesoMax()>=b.getPesoMax() &&  a.getVolMax()>=b.getVolMax());
+    return (a.getVolMax()+a.getPesoMax())>=(b.getVolMax()+b.getPesoMax());
 }
 
 bool compararEnc(Encomenda a, Encomenda b){
-    return((a.getPeso()+a.getVol())<=(b.getPeso()+b.getVol()));
+    return((a.getPeso()+a.getVol())>=(b.getPeso()+b.getVol()));
 }
 
 int preenchertruck(Carrinha& truck,Encomenda& encos){
@@ -130,6 +131,16 @@ int escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<Esta
                     flag=1;
                 }
             }
+       /* for(std::vector<Encomenda>::iterator itr=encos.begin();itr!=encos.end();1==1){
+            if(preenchertruck(truck,*itr)==1){
+                EstafetaouPedido encomendausada((*itr).getPeso(),(*itr).getVol()); //Serve para inserir nos pedidos
+                pedidos.push_back(encomendausada);
+                encos.erase(itr);
+                flag=1;
+            }
+            else
+                ++itr;
+        }*/
         if(flag==1){
             EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
             estafetas.push_back(temp);
@@ -182,32 +193,32 @@ int main() {
 
     std::sort(trucks.begin(),trucks.end(), compararCarrinhas);
     std::sort(encos.begin(),encos.end(), compararEnc);
-    int sum=0;
-    for (int i = 0; i < encos.size(); i++) {
-        sum+=encos.at(i).getDurar();
-        }
-    cout<<"TEmpo total: "<<sum<<endl;
+
     vector<EstafetaouPedido> Estafetas;
     vector<EstafetaouPedido> Pedidos;
     cout << escolhertruck(encos,trucks,Pedidos,Estafetas) << endl;
     int pp=0;
     int vv=0;
+    int ra=0;
     for (int i=0; i<Estafetas.size();i++){
         pp+=Estafetas.at(i).getPeso();
         vv+=Estafetas.at(i).getVol();
+       // cout<<"Estafeta: "<<i+1<<" Peso:"<<Estafetas.at(i).getPeso()<<" Vol: "<<Estafetas.at(i).getVol()<<endl;
+        ra++;
     }
-    cout<<"Estafetas PesoTotal " <<pp<<" Vol total:"<<vv<<endl;
+    cout<<"Estafetas "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<endl;
     int te=0;
     pp=0;
     vv=0;
-    int tempo=0;
+
    for (int i = 0; i < Pedidos.size(); i++) {
        pp+=Pedidos.at(i).getPeso();
        vv+=Pedidos.at(i).getVol();
+    //   cout<<"Pedido: "<<i+1<<" Peso:"<<Pedidos.at(i).getPeso()<<" Vol: "<<Pedidos.at(i).getVol()<<endl;
         te++;
 
     }
-    cout<<"Nº Pedido "<<te<<" Peso total:"<<pp<<" Vol total:"<<vv
-    <<" TEmpo"<<tempo<<endl;
+    cout<<"Nº Pedido "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<endl;
+
     return 0;
 }
