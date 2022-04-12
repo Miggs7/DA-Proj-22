@@ -91,24 +91,21 @@ public:
 };
 
 bool compararCarrinhas(Carrinha a, Carrinha b){
-    return (a.getVolMax()+a.getPesoMax())>=(b.getVolMax()+b.getPesoMax());
+    return ((a.getVolMax()+a.getPesoMax())>=(b.getVolMax()+b.getPesoMax()) && (a.getCusto()<=b.getCusto()));
 }
 
-/*bool compararEnc(Encomenda a, Encomenda b){
-    return((a.getPeso()+a.getVol())>=(b.getPeso()+b.getVol()));
-}
-*/
-void preenchertruck2(Carrinha& truck,vector<Encomenda>& encos){
 
-    std::cout<<"antes Tudo\n";
+int preenchertruck2(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPedido>& pedidos){
+
+
     if(encos.empty()){
         cout<<"\n Is empty\n";
-        return;
+        return 0;
     }
-    std::cout<<"antes B\n";
+
     vector<vector<vector<int>>> B(encos.size()+1,vector<vector<int>>(truck.getPesoMax()+1,vector<int>(truck.getVolMax()+1,0)));
 
-    std::cout<<"Criou B\n";
+
     for(int i=1;i<=encos.size();i++){
         for(int peso=0; peso<=truck.getPesoMax();peso++){
             for (int vol = 0; vol <=truck.getVolMax() ; vol++) {
@@ -117,38 +114,55 @@ void preenchertruck2(Carrinha& truck,vector<Encomenda>& encos){
                 if((peso>=encos.at(i-1).getPeso()) && (vol>=encos.at(i-1).getVol()) && (B[i][peso][vol]<B[i-1][peso-encos.at(i-1).getPeso()][vol-encos.at(i-1).getVol()]+encos.at(i-1).getRecomp())){
                     B[i][peso][vol]=B[i-1][peso-encos.at(i-1).getPeso()][vol-encos.at(i-1).getVol()]+encos.at(i-1).getRecomp();
                 }
-              /*  if(peso<encos.at(i).getPeso() || vol<encos.at(i).getVol()){
-                    B[i][peso][vol]=B[i-1][peso][vol];
-                }
-                else{
-                    B[i][peso][vol]= max(B[i-1][peso][vol],B[i-1][peso-encos.at(i).getPeso()][vol-encos.at(i).getVol()]+encos.at(i).getDurar());
-                } */
-                // cout<< "Valor do B "<<B[i][peso][vol]<<" ";
             }
-            //cout<<"\n";
         }
-
     }
-    cout<<"MAx dur: "<<B[encos.size()][truck.getPesoMax()][truck.getVolMax()];
+
     int n=encos.size();
     int M=truck.getPesoMax();
     int V=truck.getVolMax();
+    int indiceencomenda[n]={0}; //Serve para guardar os índices das encomendas usadas
+    int valorencomendas=0;  //serve para calcular o valor total das encomendas
+    int i=0;
+    //Usado para descobrir os indices das encomendas usadas
     while(n!=0){
         if(B[n][M][V]!=B[n-1][M][V]){
-            cout<<"Encomenda: "<<n<<" with Peso= "<<encos.at(n-1).getPeso()<<" and vol"<<encos.at(n-1).getVol()<<" and recom= "<<encos.at(n-1).getRecomp()<<endl;
-
+            valorencomendas+=encos.at(n-1).getRecomp();
             M=M-encos.at(n-1).getPeso();
             V=V-encos.at(n-1).getVol();
+            EstafetaouPedido encomendas(encos.at(n-1).getPeso(),encos.at(n-1).getVol(),encos.at(n-1).getRecomp());
+            pedidos.push_back(encomendas);
+            indiceencomenda[i]=n-1;
+            i++;
         }
         n--;
     }
+    // Só vão ser guardadas as encomendas que façam com que o lucro seja positivo
+    if(valorencomendas-truck.getCusto()>0){
+        for(int t=0; t<encos.size();t++){
+            if(indiceencomenda[t]!=0){
 
+                encos.erase(encos.begin()+indiceencomenda[t]);
+                for(int k=0;k<encos.size();k++){
+                    if(indiceencomenda[k]!=0)
+                        indiceencomenda[k]--;
+                }
+            }
+        }
+
+        //cout<<"Lucro="<<valorencomendas-truck.getCusto()<<endl;
+        return valorencomendas-truck.getCusto();
+    }
+
+
+
+    return 0;
 }
 
 int main() {
 
-    string encomendasfile("encomendas.txt");
-    string carrinhasfile("carrinhas.txt");
+    string encomendasfile("encomendas2.txt");
+    string carrinhasfile("carrinhas2.txt");
     string line;
 
     vector<Encomenda> encos;
@@ -185,16 +199,21 @@ int main() {
     }
     //Ordenar as carrinhas de forma decrescente de Peso+Volume
     std::sort(trucks.begin(),trucks.end(), compararCarrinhas);
-
-    for(auto truck : trucks){
-        preenchertruck2(truck,encos);
-        break;
-    }
-
-/*
     vector<EstafetaouPedido> Estafetas;
     vector<EstafetaouPedido> Pedidos;
-    cout << escolhertruck(encos,trucks,Pedidos,Estafetas) << endl;
+    //int lucro=0;
+    for(auto truck : trucks){
+        if (encos.empty())
+            break;
+        int temp=preenchertruck2(truck,encos,Pedidos);
+        if(temp!=0){
+            //lucro+=temp;
+            EstafetaouPedido carrinha(truck.getPesoMax(),truck.getVolMax(),truck.getCusto());
+            Estafetas.push_back(carrinha);
+        }
+    }
+   
+
     int pp=0;
     int vv=0;
     int ra=0;
@@ -205,7 +224,7 @@ int main() {
         ra++;
         custo+=Estafetas.at(i).getValor();
     }
-    cout<<"Estafetas "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<" Custo total:"<<custo<<endl;
+    cout<<"Estafetas: "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<" Custo total:"<<custo<<endl;
     int te=0;
     pp=0;
     vv=0;
@@ -216,9 +235,9 @@ int main() {
         te++;
         recom+=Pedidos.at(i).getValor();;
     }
-    cout<<"Nº Pedido "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<" Recompensa total:"<<recom<<endl;
+    cout<<"Nº Pedidos: "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<" Recompensa total:"<<recom<<endl;
     cout<<"Lucro="<<recom-custo<<endl;
-    */
+
     return 0;
 }
 
