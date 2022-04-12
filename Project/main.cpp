@@ -163,7 +163,7 @@ int main() {
         Encomenda temp(vol,peso,recompensa,duracao);
         encos.push_back(temp);
     }
-
+    int TotalEncomendas=encos.size();
     //leitura carrinhas
     std::ifstream input_file2(carrinhasfile);
 
@@ -203,6 +203,6 @@ int main() {
        te++;
     }
     cout<<"Nº Pedido "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<endl;
-
+    cout<<"Eficiencia="<<(Pedidos.size()/(float)TotalEncomendas)*100<<"%"<<endl;
     return 0;
 }

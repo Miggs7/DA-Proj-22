@@ -130,8 +130,7 @@ int preenchertruck2(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPe
             valorencomendas+=encos.at(n-1).getRecomp();
             M=M-encos.at(n-1).getPeso();
             V=V-encos.at(n-1).getVol();
-            EstafetaouPedido encomendas(encos.at(n-1).getPeso(),encos.at(n-1).getVol(),encos.at(n-1).getRecomp());
-            pedidos.push_back(encomendas);
+
             indiceencomenda[i]=n-1;
             i++;
         }
@@ -141,7 +140,8 @@ int preenchertruck2(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPe
     if(valorencomendas-truck.getCusto()>0){
         for(int t=0; t<encos.size();t++){
             if(indiceencomenda[t]!=0){
-
+                EstafetaouPedido encomendas(encos.at(t).getPeso(),encos.at(t).getVol(),encos.at(t).getRecomp());
+                pedidos.push_back(encomendas);
                 encos.erase(encos.begin()+indiceencomenda[t]);
                 for(int k=0;k<encos.size();k++){
                     if(indiceencomenda[k]!=0)
@@ -161,8 +161,8 @@ int preenchertruck2(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPe
 
 int main() {
 
-    string encomendasfile("encomendas2.txt");
-    string carrinhasfile("carrinhas2.txt");
+    string encomendasfile("encomendas.txt");
+    string carrinhasfile("carrinhas.txt");
     string line;
 
     vector<Encomenda> encos;
@@ -184,7 +184,8 @@ int main() {
         Encomenda temp(vol,peso,recompensa,duracao);
         encos.push_back(temp);
     }
-
+    int TotalEncomendas=encos.size();
+    cout<<"Total="<<TotalEncomendas<<" Encos.size():"<<encos.size()<<endl;
     //leitura carrinhas
     std::ifstream input_file2(carrinhasfile);
 
@@ -212,7 +213,7 @@ int main() {
             Estafetas.push_back(carrinha);
         }
     }
-   
+
 
     int pp=0;
     int vv=0;
@@ -237,7 +238,7 @@ int main() {
     }
     cout<<"Nº Pedidos: "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<" Recompensa total:"<<recom<<endl;
     cout<<"Lucro="<<recom-custo<<endl;
-
+    cout<<"Eficiencia="<<(Pedidos.size()/(float)TotalEncomendas)*100<<"%"<<endl;
     return 0;
 }
 
