@@ -32,13 +32,17 @@ public:
     }
 };
 class EstafetaouPedido{
-    int vol;
     int peso;
+    int vol;
     int valor;
 public:
+    //! Cria um elemento do tipo EstafetaouPedido
+    //! \param pe-peso do elemento
+    //! \param v-volume do elemento
+    //! \param money-valor monetário do elemento
     EstafetaouPedido(int pe,int v,int money){
-        vol=v;
         peso=pe;
+        vol=v;
         valor=money;
     }
 
@@ -121,30 +125,39 @@ int preenchertruck2(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPe
     int n=encos.size();
     int M=truck.getPesoMax();
     int V=truck.getVolMax();
+    //vecto indice(n,0);
     int indiceencomenda[n]={0}; //Serve para guardar os índices das encomendas usadas
     int valorencomendas=0;  //serve para calcular o valor total das encomendas
     int i=0;
     //Usado para descobrir os indices das encomendas usadas
+    int pso=0;
+    int vol=0;
     while(n!=0){
         if(B[n][M][V]!=B[n-1][M][V]){
             valorencomendas+=encos.at(n-1).getRecomp();
             M=M-encos.at(n-1).getPeso();
             V=V-encos.at(n-1).getVol();
-
+            pso+=encos.at(n-1).getPeso();
+            vol+=encos.at(n-1).getVol();
+          //  cout<<"Encomenda:"<<n-1<<" Peso:"<<encos.at(n-1).getPeso()<<" Vol:"<<encos.at(n-1).getVol()<<endl;
             indiceencomenda[i]=n-1;
+         //  cout<<"Indicie encomenda:"<<indiceencomenda[i]<<"\n"<<endl;
             i++;
         }
         n--;
     }
+   // cout<<"\nApos knapsack: Numero encomendas:"<<i<<" Peso total:"<<pso<<" Volume total:"<<vol<<endl;
     // Só vão ser guardadas as encomendas que façam com que o lucro seja positivo
     if(valorencomendas-truck.getCusto()>0){
         for(int t=0; t<encos.size();t++){
             if(indiceencomenda[t]!=0){
-                EstafetaouPedido encomendas(encos.at(t).getPeso(),encos.at(t).getVol(),encos.at(t).getRecomp());
+
+             //   cout<<"Dentro for Indicie encomenda:"<<indiceencomenda[t]<<"\n"<<endl;
+                EstafetaouPedido encomendas(encos.at(indiceencomenda[t]).getPeso(),encos.at(indiceencomenda[t]).getVol(),encos.at(indiceencomenda[t]).getRecomp());
                 pedidos.push_back(encomendas);
                 encos.erase(encos.begin()+indiceencomenda[t]);
                 for(int k=0;k<encos.size();k++){
-                    if(indiceencomenda[k]!=0)
+                    if(indiceencomenda[k]>indiceencomenda[t])
                         indiceencomenda[k]--;
                 }
             }
@@ -213,6 +226,8 @@ int main() {
             EstafetaouPedido carrinha(truck.getPesoMax(),truck.getVolMax(),truck.getCusto());//Serve só para inserir nos Estafetas
             Estafetas.push_back(carrinha);
         }
+       // cout<<"Peso Carrinha:"<<truck.getPesoMax()<<" Volume carrinha:"<<truck.getVolMax()<<endl;
+
     }
 
 
@@ -231,11 +246,14 @@ int main() {
     pp=0;
     vv=0;
     int recom=0;
+
     for (int i = 0; i < Pedidos.size(); i++) {
         pp+=Pedidos.at(i).getPeso();
         vv+=Pedidos.at(i).getVol();
         te++;
-        recom+=Pedidos.at(i).getValor();;
+        //cout<<"Pedido:"<<i+1<<" PEso:"<<Pedidos.at(i).getPeso()<<" Vol"<< Pedidos.at(i).getVol()<<endl;
+        recom+=Pedidos.at(i).getValor();
+
     }
     cout<<"Nº Pedidos: "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<" Recompensa total:"<<recom<<endl;
     cout<<"Lucro="<<recom-custo<<endl;

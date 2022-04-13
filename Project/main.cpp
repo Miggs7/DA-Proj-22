@@ -130,7 +130,7 @@ bool compararEnc(Encomenda a, Encomenda b){
 //! \param encos-encomenda escolhida
 //! \return 0-se não couber na carrinha
 //! \return 1-se couber na carrinha
-int preenchertruck(Carrinha& truck,Encomenda& enco){
+int FitsInTruck(Carrinha& truck,Encomenda& enco){
     int tempV = enco.getVol();
     int tempW = enco.getPeso();
 
@@ -160,7 +160,7 @@ void escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<Est
         if(encos.empty())
             break;
         for(int i = 0; i < (int) encos.size(); i++){
-                if(preenchertruck(truck,encos.at(i)) == 1){
+                if(FitsInTruck(truck,encos.at(i)) == 1){
                    EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
                     pedidos.push_back(encomendausada);
 
