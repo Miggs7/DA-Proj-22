@@ -49,11 +49,18 @@ public:
     }
 
 };
+
+//! Class para guardar os parâmetros de uma carrinha
 class Carrinha{
+    //!Volume máximo da carrinha
     int volMax;
+    //!Peso máximo da carrinha
     int pesoMax;
+    //!Custo da carrinha
     int custo;
+    //!Volume disponível da carrinha
     int volatual;
+    //!Peso disponível da carrinha
     int pesoatual;
 public:
     Carrinha(int v,int p,int c){
@@ -63,40 +70,69 @@ public:
         volatual=v;
         pesoatual=p;
     }
+    //! Devolve o volume máximo da carrinha
+    //! \return volume máximo da carrinha
     int getVolMax(){
         return volMax;
     }
+    //! Devolve o peso máximo da carrinha
+    //! \return peso máximo da carrinha
     int getPesoMax(){
         return pesoMax;
     }
+    //! Devolve o custo da carrinha
+    //! \return custo da carrinha
     int getCusto(){
         return custo;
     }
+    //! Devolve o Volume disponível da carrinha
+    //! \return Volume disponível da carrinha
     int getVolatual(){
         return volatual;
     }
+    //! Devolve o Peso disponível da carrinha
+    //! \return Peso disponível da carrinha
     int getPesoAtual(){
         return pesoatual;
     }
+
+    //! Retira ao peso disponível o valor indicado
+    //! \param addedpeso-Peso a retirar ao peso disponível da carrinha
     void setPesoAtual(int addedpeso){
         pesoatual=pesoatual-addedpeso;
     }
+
+    //! Retira ao volume disponível o valor indicado
+    //! \param addedvol-Vol a retirar ao volume disponível da carrinha
     void setVolAtual(int addedvol){
         volatual=volatual-addedvol;
     }
 };
 
+//! Ordena as carrinhas de forma decrescente de capacidade(peso+volume)
+//! \param a- carrinha A
+//! \param b- carrinha B
+//! \return true se  capacidadeA>=capacidadeB
 bool compararCarrinhas(Carrinha a, Carrinha b){
     return (a.getVolMax()+a.getPesoMax())>=(b.getVolMax()+b.getPesoMax());
 }
 
+//! Ordena as encomendas de forma decrescente de capacidade(peso+volume)
+//! \param a- encomenda A
+//! \param b- encomenda B
+//! \return true se capacidadeA>=capacidadeB
 bool compararEnc(Encomenda a, Encomenda b){
     return((a.getPeso()+a.getVol())>=(b.getPeso()+b.getVol()));
 }
 
-int preenchertruck(Carrinha& truck,Encomenda& encos){
-    int tempV = encos.getVol();
-    int tempW = encos.getPeso();
+//! Verifica se é possível colocar a encomenda "enco" na carrinha "truck"
+//! \param truck-carrinha escolhida
+//! \param encos-encomenda escolhida
+//! \return 0-se não couber na carrinha
+//! \return 1-se couber na carrinha
+int preenchertruck(Carrinha& truck,Encomenda& enco){
+    int tempV = enco.getVol();
+    int tempW = enco.getPeso();
 
     if((truck.getVolatual()-tempV)>=0 && (truck.getPesoAtual()-tempW)>=0){
         truck.setPesoAtual(tempW);
@@ -108,7 +144,12 @@ int preenchertruck(Carrinha& truck,Encomenda& encos){
     return 0;
 }
 
-
+//! Preenche as carrinhas dadas por "trucks" com as encomendas "encos" colocando as carrinhas
+//! usadas em "estafetas" e as encomendas usadas em "pedidos"
+//! \param encos-todas as encomendas
+//! \param trucks-todas as carrinhas
+//! \param pedidos-Vetor para guardar as encomendas legíveis
+//! \param estafetas-Vetor para guardas as carrinhas utilizadas para guardas as encomendas
 void escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<EstafetaouPedido>& pedidos,vector<EstafetaouPedido>& estafetas ){
 
 
