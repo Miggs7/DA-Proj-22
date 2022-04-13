@@ -29,22 +29,22 @@ public:
         durar = d;
     }
     //! Consegue o volume da encomenda
-    //! \return valor do volume da encomenda
+    //! \return valor do atributo volume da encomenda
     int getVol(){
         return volume;
     }
     //! Consegue o Peso da encomenda
-    //! \return valor do peso da encomenda
+    //! \return valor do atributo peso da encomenda
     int getPeso(){
         return peso;
     }
     //! Consegue a Recompensa da encomenda
-    //! \return valor da recompensa da encomenda
+    //! \return valor do atributo recomda encomenda
     int getRecomp(){
         return recom;
     }
     //! Consegue a Duração da encomenda
-    //! \return valor da recompensa da encomenda
+    //! \return valor do atributo durar da encomenda
     int getDurar(){
         return durar;
     }
@@ -68,17 +68,17 @@ public:
         duracao=dur;
     }
     //! Consegue o volume do Pedido
-    //! \return valor do volume do pedido
+    //! \return valor do atributo vol do pedido
     int const getVol(){
         return vol;
     }
     //! Consegue o peso do Pedido
-    //! \return valor do peso do pedido
+    //! \return valor do atributo peso do pedido
     int const getPeso(){
         return peso;
     }
     //! Consegue a duração do Pedido
-    //! \return o valor da duração do pedido
+    //! \return o valor do atributo duração do pedido
     int const getDur(){
         return duracao;
     }
