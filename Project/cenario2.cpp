@@ -167,13 +167,12 @@ int main() {
 
     vector<Encomenda> encos;
     vector<Carrinha> trucks;
-    ifstream input_file(encomendasfile);
 
+    //leitura encomendas
+    ifstream input_file(encomendasfile);
     if(!input_file.is_open()){
         cout<<"Erro ao abrir o ficheiro "<<encomendasfile<<endl;
     }
-
-    //leitura encomendas
     while(std::getline(input_file,line)){
         char *dup = strdup(line.c_str());
         int vol = atoi(strtok(dup," "));
@@ -186,9 +185,9 @@ int main() {
     }
     int TotalEncomendas=encos.size();
     cout<<"Total="<<TotalEncomendas<<" Encos.size():"<<encos.size()<<endl;
+
     //leitura carrinhas
     std::ifstream input_file2(carrinhasfile);
-
     while(std::getline(input_file2,line)){
         char *dup = strdup(line.c_str());
         int volMax = atoi(strtok(dup," "));
@@ -198,19 +197,20 @@ int main() {
         Carrinha temp2(volMax,pesoMax,custo);
         trucks.push_back(temp2);
     }
-    //Ordenar as carrinhas de forma decrescente de Peso+Volume
+
+    //Ordenar as carrinhas de forma decrescente de Capacidade(Peso+Volume)
     std::sort(trucks.begin(),trucks.end(), compararCarrinhas);
 
-    vector<EstafetaouPedido> Estafetas;
-    vector<EstafetaouPedido> Pedidos;
-    
+    vector<EstafetaouPedido> Estafetas; //Vetor para guardar as carrinhas usadas
+    vector<EstafetaouPedido> Pedidos; //Vetor para guardar as encomendas usadas
+
+
     for(auto truck : trucks){
         if (encos.empty())
             break;
         int temp=preenchertruck2(truck,encos,Pedidos);
         if(temp!=0){
-            //lucro+=temp;
-            EstafetaouPedido carrinha(truck.getPesoMax(),truck.getVolMax(),truck.getCusto());
+            EstafetaouPedido carrinha(truck.getPesoMax(),truck.getVolMax(),truck.getCusto());//Serve só para inserir nos Estafetas
             Estafetas.push_back(carrinha);
         }
     }
