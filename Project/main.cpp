@@ -3,6 +3,7 @@
 #include<algorithm>
 #include <fstream>
 #include <cstring>
+#include <map>
 
 using namespace std;
 
@@ -52,6 +53,7 @@ public:
 
 //! Class para guardar os parâmetros de uma carrinha
 class Carrinha{
+    int id;
     //!Volume máximo da carrinha
     int volMax;
     //!Peso máximo da carrinha
@@ -63,12 +65,17 @@ class Carrinha{
     //!Peso disponível da carrinha
     int pesoatual;
 public:
-    Carrinha(int v,int p,int c){
+    Carrinha(int i,int v,int p,int c){
+        id=i;
         volMax = v;
         pesoMax = p;
         custo = c;
         volatual=v;
         pesoatual=p;
+    }
+
+    int getId(){
+        return id;
     }
     //! Devolve o volume máximo da carrinha
     //! \return volume máximo da carrinha
@@ -212,14 +219,16 @@ int main() {
     if(!input_file2.is_open()){
         cout<<"Erro ao abrir o ficheiro "<<carrinhasfile<<endl;
     }
+    int id=1;
     while(std::getline(input_file2,line)){
         char *dup = strdup(line.c_str());
         int volMax = atoi(strtok(dup," "));
         int pesoMax = atoi(strtok(NULL," "));
         int custo  = atoi(strtok(NULL," "));
         free(dup);
-        Carrinha temp2(volMax,pesoMax,custo);
+        Carrinha temp2(id,volMax,pesoMax,custo);
         trucks.push_back(temp2);
+        id++;
     }
 
     //Ordenar as carrinhas de forma decrescente de Capacidade(Peso+Vol)
@@ -232,7 +241,28 @@ int main() {
     vector<EstafetaouPedido> Pedidos;   //Vetor para guardar as encomendas guardadas
 
     //Chamar função
-   escolhertruck(encos,trucks,Pedidos,Estafetas);
+  // escolhertruck(encos,trucks,Pedidos,Estafetas);
+    std::map<int,int> guardarcarrinhas;
+
+    for (int i = 0; i < encos.size(); i++) {
+
+        for(auto truck : trucks){
+            if(FitsInTruck(truck,encos.at(i))){
+                EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
+                Pedidos.push_back(encomendausada);
+                if(guardarcarrinhas.find(truck.getId())==guardarcarrinhas.end()){
+                //    cout<<"Find"<<guardarcarrinhas.find(truck.getId())<<endl;
+                    guardarcarrinhas.insert({truck.getId(),1});
+                    EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
+                    Estafetas.push_back(temp);
+                }
+                encos.erase(encos.begin()+i);
+                i--;
+                break;
+            }
+        }
+    }
+
 
     int pp=0;   //Variáveis para contar o Peso e Volume total
     int vv=0;   // das carrinhas usadas e encomendas guardadas
