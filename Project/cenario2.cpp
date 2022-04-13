@@ -200,9 +200,10 @@ int main() {
     }
     //Ordenar as carrinhas de forma decrescente de Peso+Volume
     std::sort(trucks.begin(),trucks.end(), compararCarrinhas);
+
     vector<EstafetaouPedido> Estafetas;
     vector<EstafetaouPedido> Pedidos;
-    //int lucro=0;
+    
     for(auto truck : trucks){
         if (encos.empty())
             break;
@@ -225,7 +226,7 @@ int main() {
         ra++;
         custo+=Estafetas.at(i).getValor();
     }
-    cout<<"Estafetas: "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<" Custo total:"<<custo<<endl;
+    cout<<"Nº Estafetas: "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<" Custo total:"<<custo<<endl;
     int te=0;
     pp=0;
     vv=0;

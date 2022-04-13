@@ -109,10 +109,10 @@ int preenchertruck(Carrinha& truck,Encomenda& encos){
 }
 
 
-int escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<EstafetaouPedido>& pedidos,vector<EstafetaouPedido>& estafetas ){
-    int count = 0;
-    int t = 0;
-    int flag=0;
+void escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<EstafetaouPedido>& pedidos,vector<EstafetaouPedido>& estafetas ){
+
+
+    int flag=0; // Flag para indicar se uma carrinha foi usada para guardar encomendas
 
     for(auto truck : trucks) {
        flag=0;
@@ -122,20 +122,21 @@ int escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<Esta
                 if(preenchertruck(truck,encos.at(i)) == 1){
                    EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
                     pedidos.push_back(encomendausada);
+
                     encos.erase(encos.begin()+i);
                     i--;
-                    flag=1;
+
+                    flag=1;  //Flag fica a 1 se foi intruduzida uma encomenda na carrinha atual
                 }
             }
 
         if(flag==1){
             EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
             estafetas.push_back(temp);
-            count++;
-            continue;
+            //continue;
         }
     }
-    return count;
+    return;
 }
 
 int main() {
@@ -144,15 +145,15 @@ int main() {
     string carrinhasfile("carrinhas.txt");
     string line;
 
-    vector<Encomenda> encos;
-    vector<Carrinha> trucks;
-    ifstream input_file(encomendasfile);
+    vector<Encomenda> encos;   // Vetor para guardar as encomendas
+    vector<Carrinha> trucks;   //Vetor para guardar as carrinhas
 
+
+    //leitura encomendas
+    ifstream input_file(encomendasfile);
     if(!input_file.is_open()){
         cout<<"Erro ao abrir o ficheiro "<<encomendasfile<<endl;
     }
-
-    //leitura encomendas
     while(std::getline(input_file,line)){
         char *dup = strdup(line.c_str());
         int vol = atoi(strtok(dup," "));
@@ -164,10 +165,12 @@ int main() {
         encos.push_back(temp);
     }
     int TotalEncomendas=encos.size();
+
     //leitura carrinhas
     std::ifstream input_file2(carrinhasfile);
-
-
+    if(!input_file2.is_open()){
+        cout<<"Erro ao abrir o ficheiro "<<carrinhasfile<<endl;
+    }
     while(std::getline(input_file2,line)){
         char *dup = strdup(line.c_str());
         int volMax = atoi(strtok(dup," "));
@@ -178,31 +181,36 @@ int main() {
         trucks.push_back(temp2);
     }
 
+    //Ordenar as carrinhas de forma decrescente de Capacidade(Peso+Vol)
     std::sort(trucks.begin(),trucks.end(), compararCarrinhas);
+
+    //Ordenar as encomendas de forma decrescente de Capacidade(Peso+Vol)
     std::sort(encos.begin(),encos.end(), compararEnc);
 
-    vector<EstafetaouPedido> Estafetas;
-    vector<EstafetaouPedido> Pedidos;
-    cout << escolhertruck(encos,trucks,Pedidos,Estafetas) << endl;
-    int pp=0;
-    int vv=0;
-    int ra=0;
+    vector<EstafetaouPedido> Estafetas; //Vetor para guardar as carrinhas usadas
+    vector<EstafetaouPedido> Pedidos;   //Vetor para guardar as encomendas guardadas
+
+    //Chamar função
+   escolhertruck(encos,trucks,Pedidos,Estafetas);
+
+    int pp=0;   //Variáveis para contar o Peso e Volume total
+    int vv=0;   // das carrinhas usadas e encomendas guardadas
+
     for (int i=0; i<Estafetas.size();i++){
         pp+=Estafetas.at(i).getPeso();
         vv+=Estafetas.at(i).getVol();
-        ra++;
+
     }
-    cout<<"Estafetas "<<ra<<" PesoTotal " <<pp<<" Vol total:"<<vv<<endl;
-    int te=0;
+    cout<<"Nº Estafetas: "<<Estafetas.size()<<" PesoTotal: " <<pp<<" Vol total:"<<vv<<endl;
+
     pp=0;
     vv=0;
 
    for (int i = 0; i < Pedidos.size(); i++) {
        pp+=Pedidos.at(i).getPeso();
        vv+=Pedidos.at(i).getVol();
-       te++;
     }
-    cout<<"Nº Pedido "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<endl;
+    cout<<"Nº Pedidos: "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<endl;
     cout<<"Eficiencia="<<(Pedidos.size()/(float)TotalEncomendas)*100<<"%"<<endl;
     return 0;
 }
