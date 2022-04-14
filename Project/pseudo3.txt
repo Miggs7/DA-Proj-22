@@ -1,0 +1,6 @@
+for i in 0 to i<encos.size() do
+        if(temp-encos.at(i).getDurar()>0) then
+            Pedido encomenda(encos.at(i).getPeso(),encos.at(i).getVol(),encos.at(i).getDurar())
+            Pedidos.push_back(encomenda)
+        end if
+
