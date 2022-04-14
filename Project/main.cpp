@@ -135,7 +135,7 @@ public:
     }
 
     //! Retira ao volume disponível o valor indicado
-    //! \param addedvol-Vol a retirar ao volume disponível da carrinha
+    //! \param addedvol-Volume a retirar ao volume disponível da carrinha
     void setVolAtual(int addedvol){
         volatual=volatual-addedvol;
     }
@@ -189,18 +189,18 @@ void escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<Est
     int flag=0; // Flag para indicar se uma carrinha foi usada para guardar encomendas
 
     for(auto truck : trucks) {
-       flag=0;
+        flag=0;
         if(encos.empty())
             break;
         for(int i = 0; i < (int) encos.size(); i++){
-                if(FitsInTruck(truck,encos.at(i)) == 1){
-                   EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
-                    pedidos.push_back(encomendausada);
-                    encos.erase(encos.begin()+i);
-                    i--;
-                    flag=1;  //Flag fica a 1 se foi intruduzida uma encomenda na carrinha atual
-                }
+            if(FitsInTruck(truck,encos.at(i)) == 1){
+                EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
+                pedidos.push_back(encomendausada);
+                encos.erase(encos.begin()+i);
+                i--;
+                flag=1;  //Flag fica a 1 se foi intruduzida uma encomenda na carrinha atual
             }
+        }
         //Ver se foi inserida uma encomenda na carrinha atual
         //Se for, quer dizer que a carrinha é usada para encomendas
         if(flag==1){
@@ -267,7 +267,39 @@ int main() {
     vector<EstafetaouPedido> Pedidos;   //Vetor para guardar as encomendas guardadas
 
     //Chamar função
+    <<<<<<< Updated upstream
     escolhertruck(encos,trucks,Pedidos,Estafetas);
+    =======
+    // escolhertruck(encos,trucks,Pedidos,Estafetas);
+    std::map<string,string> guardarcarrinhas;
+    int breakflag=0;
+    for (int i = 0; i < encos.size(); i++) {
+        for(auto truck : trucks){
+            //cout<<"Id:"<<truck.getId()<<endl;
+            breakflag=0;
+            if(FitsInTruck(truck,encos.at(i))==1){
+                EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
+                Pedidos.push_back(encomendausada);
+                cout<<"Id:"<<truck.getId()<<endl;
+                if(guardarcarrinhas.find(""+truck.getId())==guardarcarrinhas.end()){
+                    //cout<<"ENtrou no if"<<endl;
+                    guardarcarrinhas.insert({""+truck.getId(),"in"});
+                    EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
+                    Estafetas.push_back(temp);
+                }
+                //  encos.erase(encos.begin()+i);
+                //   cout<<"I antes"<<i<<endl;
+                // i--;
+                // cout<<"I depois"<<i<<endl;
+                breakflag=1;
+            }
+            if(breakflag==1){
+                // cout<<"Antes break"<<endl;
+                break;
+            }
+        }
+    }
+    >>>>>>> Stashed changes
 
 
     int pp=0;   //Variáveis para contar o Peso e Volume total
@@ -283,9 +315,9 @@ int main() {
     pp=0;
     vv=0;
 
-   for (int i = 0; i < Pedidos.size(); i++) {
-       pp+=Pedidos.at(i).getPeso();
-       vv+=Pedidos.at(i).getVol();
+    for (int i = 0; i < Pedidos.size(); i++) {
+        pp+=Pedidos.at(i).getPeso();
+        vv+=Pedidos.at(i).getVol();
     }
     cout<<"Nº Pedidos: "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<endl;
     cout<<"Eficiencia="<<(Pedidos.size()/(float)TotalEncomendas)*100<<"%"<<endl;
