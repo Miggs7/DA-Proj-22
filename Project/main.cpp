@@ -7,44 +7,71 @@
 
 using namespace std;
 
+//!Class para guardar os parâmetros de um Encomenda
 class Encomenda{
+    //!Volume da encomenda
     int volume;
+    //!Peso da encomenda
     int peso;
+    //!Recompensa da encomenda
     int recom;
+    //!Duração da entrega da encomenda
     int durar;
 public:
+    //! Cria uma nova Encomenda
+    //! \param v-volume da encomenda
+    //! \param p-peso da encomenda
+    //! \param r-recompensa da encomenda
+    //! \param d-duração da encomenda
     Encomenda(int v,int p,int r,int d){
         volume = v;
         peso = p;
         recom = r;
         durar = d;
     }
+    //! Consegue o volume da encomenda
+    //! \return valor do volume da encomenda
     int getVol(){
         return volume;
     }
+    //! Consegue o Peso da encomenda
+    //! \return valor do peso da encomenda
     int getPeso(){
         return peso;
     }
+    //! Consegue a Recompensa da encomenda
+    //! \return valor da recompensa da encomenda
     int getRecomp(){
         return recom;
     }
+    //! Consegue a Duração da encomenda
+    //! \return valor da recompensa da encomenda
     int getDurar(){
         return durar;
     }
 };
+//!Class para guardar um Estafeta ou um Pedido
 class EstafetaouPedido{
+    //!Volume do Estafeta/Pedido
     int vol;
+    //!Peso do Estafeta/Pedido
     int peso;
 public:
+    //! Cria um elemento do tipo EstafetaouPedido
+    //! \param pe-peso do elemento
+    //! \param v-volume do elemento
     EstafetaouPedido(int pe,int v){
         vol=v;
         peso=pe;
 
     }
-
+    //! Consegue o Volume do elemento EstafetaouPedido
+    //! \return valor do atributo vol do elemento
     int const getVol(){
         return vol;
     }
+    //! Consegue o Peso do elemento EstafetaouPedido
+    //! \return valor do atributo peso do elemento
     int const getPeso(){
         return peso;
     }
@@ -53,7 +80,6 @@ public:
 
 //! Class para guardar os parâmetros de uma carrinha
 class Carrinha{
-    int id;
     //!Volume máximo da carrinha
     int volMax;
     //!Peso máximo da carrinha
@@ -65,17 +91,16 @@ class Carrinha{
     //!Peso disponível da carrinha
     int pesoatual;
 public:
-    Carrinha(int i,int v,int p,int c){
-        id=i;
+    //! Cria uma nova Carrinha
+    //! \param v-volume da carrinha
+    //! \param p-peso da carrinha
+    //! \param c-custo da carrinha
+    Carrinha(int v,int p,int c){
         volMax = v;
         pesoMax = p;
         custo = c;
         volatual=v;
         pesoatual=p;
-    }
-
-    int getId(){
-        return id;
     }
     //! Devolve o volume máximo da carrinha
     //! \return volume máximo da carrinha
@@ -141,8 +166,9 @@ int FitsInTruck(Carrinha& truck,Encomenda& enco){
     int tempV = enco.getVol();
     int tempW = enco.getPeso();
 
+    //Indica se a carrinha escolhida tem espaço disponível para a encomenda escolhida
     if((truck.getVolatual()-tempV)>=0 && (truck.getPesoAtual()-tempW)>=0){
-        truck.setPesoAtual(tempW);
+        truck.setPesoAtual(tempW);//Diminuir a capacidade disponivel da carrinha
         truck.setVolAtual(tempV);
         return 1;
     }
@@ -170,38 +196,38 @@ void escolhertruck(vector<Encomenda>& encos, vector<Carrinha>& trucks,vector<Est
                 if(FitsInTruck(truck,encos.at(i)) == 1){
                    EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
                     pedidos.push_back(encomendausada);
-
                     encos.erase(encos.begin()+i);
                     i--;
-
                     flag=1;  //Flag fica a 1 se foi intruduzida uma encomenda na carrinha atual
                 }
             }
-
+        //Ver se foi inserida uma encomenda na carrinha atual
+        //Se for, quer dizer que a carrinha é usada para encomendas
         if(flag==1){
             EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
             estafetas.push_back(temp);
-            //continue;
         }
     }
     return;
 }
 
 int main() {
+    vector<Encomenda> encos;// Vetor para guardar as encomendas
+    vector<Carrinha> trucks;//Vetor para guardar as carrinhas
 
-    string encomendasfile("encomendas.txt");
-    string carrinhasfile("carrinhas.txt");
+
+    string encomendasfile("encomendas.txt");//Ficheiro onde se encontram os dados das encomendas
+    string carrinhasfile("carrinhas.txt");//Ficheiro onde se encontram os dados das carrinhas
     string line;
 
-    vector<Encomenda> encos;   // Vetor para guardar as encomendas
-    vector<Carrinha> trucks;   //Vetor para guardar as carrinhas
 
 
-    //leitura encomendas
     ifstream input_file(encomendasfile);
+    //Verificar se a stream está associada a um ficheiro
     if(!input_file.is_open()){
         cout<<"Erro ao abrir o ficheiro "<<encomendasfile<<endl;
     }
+    //leitura encomendas
     while(std::getline(input_file,line)){
         char *dup = strdup(line.c_str());
         int vol = atoi(strtok(dup," "));
@@ -214,21 +240,21 @@ int main() {
     }
     int TotalEncomendas=encos.size();
 
-    //leitura carrinhas
+
     std::ifstream input_file2(carrinhasfile);
+    //Verificar se a stream está associada a um ficheiro
     if(!input_file2.is_open()){
         cout<<"Erro ao abrir o ficheiro "<<carrinhasfile<<endl;
     }
-    int id=1;
+    //leitura carrinhas
     while(std::getline(input_file2,line)){
         char *dup = strdup(line.c_str());
         int volMax = atoi(strtok(dup," "));
         int pesoMax = atoi(strtok(NULL," "));
         int custo  = atoi(strtok(NULL," "));
         free(dup);
-        Carrinha temp2(id,volMax,pesoMax,custo);
+        Carrinha temp2(volMax,pesoMax,custo);
         trucks.push_back(temp2);
-        id++;
     }
 
     //Ordenar as carrinhas de forma decrescente de Capacidade(Peso+Vol)
@@ -241,27 +267,7 @@ int main() {
     vector<EstafetaouPedido> Pedidos;   //Vetor para guardar as encomendas guardadas
 
     //Chamar função
-  // escolhertruck(encos,trucks,Pedidos,Estafetas);
-    std::map<int,int> guardarcarrinhas;
-
-    for (int i = 0; i < encos.size(); i++) {
-
-        for(auto truck : trucks){
-            if(FitsInTruck(truck,encos.at(i))){
-                EstafetaouPedido encomendausada(encos.at(i).getPeso(),encos.at(i).getVol()); //Serve para inserir nos pedidos
-                Pedidos.push_back(encomendausada);
-                if(guardarcarrinhas.find(truck.getId())==guardarcarrinhas.end()){
-                //    cout<<"Find"<<guardarcarrinhas.find(truck.getId())<<endl;
-                    guardarcarrinhas.insert({truck.getId(),1});
-                    EstafetaouPedido temp(truck.getPesoMax(),truck.getVolMax()); //Serve para inserir nas estafetas
-                    Estafetas.push_back(temp);
-                }
-                encos.erase(encos.begin()+i);
-                i--;
-                break;
-            }
-        }
-    }
+    escolhertruck(encos,trucks,Pedidos,Estafetas);
 
 
     int pp=0;   //Variáveis para contar o Peso e Volume total
