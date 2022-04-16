@@ -3,123 +3,10 @@
 #include<algorithm>
 #include <fstream>
 #include <cstring>
+#include "info.hpp"
 
 using namespace std;
-//!Class para guardar os parâmetros de um Encomenda
-class Encomenda{
-    //!Volume da encomenda
-    int volume;
-    //!Peso da encomenda
-    int peso;
-    //!Recompensa da encomenda
-    int recom;
-    //!Duração da entrega da encomenda
-    int durar;
-public:
-    //! Cria uma nova Encomenda
-    //! \param v-volume da encomenda
-    //! \param p-peso da encomenda
-    //! \param r-recompensa da encomenda
-    //! \param d-duração da encomenda
-    Encomenda(int v,int p,int r,int d){
-        volume = v;
-        peso = p;
-        recom = r;
-        durar = d;
-    }
-    //! Consegue o volume da encomenda
-    //! \return valor do volume da encomenda
-    int getVol(){
-        return volume;
-    }
-    //! Consegue o Peso da encomenda
-    //! \return valor do peso da encomenda
-    int getPeso(){
-        return peso;
-    }
-    //! Consegue a Recompensa da encomenda
-    //! \return valor da recompensa da encomenda
-    int getRecomp(){
-        return recom;
-    }
-    //! Consegue a Duração da encomenda
-    //! \return valor da recompensa da encomenda
-    int getDurar(){
-        return durar;
-    }
-};
-//!Class para guardar um Estafeta ou um Pedido
-class EstafetaouPedido{
-    //!Peso do Estafeta/Pedido
-    int peso;
-    //!Volume do Estafeta/Pedido
-    int vol;
-    //!Custo do Estafeta/Recompensa do Pedido
-    int valor;
-public:
-    //! Cria um elemento do tipo EstafetaouPedido
-    //! \param pe-peso do elemento
-    //! \param v-volume do elemento
-    //! \param money-valor monetário do elemento
-    EstafetaouPedido(int pe,int v,int money){
-        peso=pe;
-        vol=v;
-        valor=money;
-    }
-    //! Consegue o Volume do elemento EstafetaouPedido
-    //! \return valor do atributo vol do elemento
-    int const getVol(){
-        return vol;
-    }
-    //! Consegue o Peso do elemento EstafetaouPedido
-    //! \return valor atributo peso do elemento
-    int const getPeso(){
-        return peso;
-    }
-    //! Consegue o Valor do elemento EstafetaouPedido
-    //! \return valor do atributo valor do elemento
-    int const getValor(){
-        return valor;
-    }
 
-};
-//! Class para guardar os parâmetros de uma carrinha
-class Carrinha{
-    //!Volume máximo da carrinha
-    int volMax;
-    //!Peso máximo da carrinha
-    int pesoMax;
-    //!Custo da carrinha
-    int custo;
-
-public:
-    //! Cria uma nova Carrinha
-    //! \param v-volume da carrinha
-    //! \param p-peso da carrinha
-    //! \param c-custo da carrinha
-    Carrinha(int v,int p,int c){
-        volMax = v;
-        pesoMax = p;
-        custo = c;
-
-    }
-    //! Consegue o volume máximo da carrinha
-    //! \return valor do atributo volmax da carrinha
-    int getVolMax(){
-        return volMax;
-    }
-    //! Consegue o peso máximo da carrinha
-    //! \return valor do atributo pesomax da carrinha
-    int getPesoMax(){
-        return pesoMax;
-    }
-    //! Consegue o custo da carrinha
-    //! \return valor do atributo custo da carrinha
-    int getCusto(){
-        return custo;
-    }
-
-};
 //! Compara a capacidade(peso+volume) e o custo de duas carrinhas
 //! \param a- 1º carrinha
 //! \param b - 2º carrinha
@@ -135,7 +22,7 @@ bool compararCarrinhas(Carrinha a, Carrinha b){
 //! \param pedidos- vetor para guardar as encomendas usadas
 //! \return 0- Em caso de não haver mais encomendas ou caso o Lucro da carrinha não seja positivo
 //! \return Lucro( (soma das recompensas de todas as encomendas)-custo da carrinha)- Caso Lucro seja positivo
-int preenchertruck(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPedido>& pedidos){
+int preenchertruck(Carrinha& truck,vector<Encomenda>& encos,vector<Encomenda>& pedidos){
 
     //Verificar se existem encomendas por usar
     if(encos.empty()){
@@ -146,7 +33,7 @@ int preenchertruck(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPed
     vector<vector<vector<int>>> B(encos.size()+1,vector<vector<int>>(truck.getPesoMax()+1,vector<int>(truck.getVolMax()+1,0)));
 
 
-    for(int i=1;i<=encos.size();i++){
+    for(int i=1;i<= encos.size();i++){
         for(int peso=0; peso<=truck.getPesoMax();peso++){
             for (int vol = 0; vol <=truck.getVolMax() ; vol++) {
                 B[i][peso][vol]=B[i-1][peso][vol];
@@ -180,7 +67,7 @@ int preenchertruck(Carrinha& truck,vector<Encomenda>& encos,vector<EstafetaouPed
     if(valorencomendas-truck.getCusto()>0){
         for(int t=0; t<encos.size();t++){
             if(indiceencomenda[t]!=0){
-                EstafetaouPedido encomendas(encos.at(indiceencomenda[t]).getPeso(),encos.at(indiceencomenda[t]).getVol(),encos.at(indiceencomenda[t]).getRecomp());//serve só para guardas em pedidos
+                Encomenda encomendas(encos.at(indiceencomenda[t]).getVol(),encos.at(indiceencomenda[t]).getPeso(),encos.at(indiceencomenda[t]).getRecomp(),0);//serve só para guardas em pedidos
                 pedidos.push_back(encomendas);
                 encos.erase(encos.begin()+indiceencomenda[t]);
                 //Reduzir a posição das encomendas com uma posição superior à encomenda indiceencomenda[t] por 1
@@ -244,8 +131,8 @@ int main() {
     //Ordenar as carrinhas de forma decrescente de Capacidade(Peso+Volume)
     std::sort(trucks.begin(),trucks.end(), compararCarrinhas);
 
-    vector<EstafetaouPedido> Estafetas; //Vetor para guardar as carrinhas usadas
-    vector<EstafetaouPedido> Pedidos; //Vetor para guardar as encomendas usadas
+    vector<Carrinha> Estafetas; //Vetor para guardar as carrinhas usadas
+    vector<Encomenda> Pedidos; //Vetor para guardar as encomendas usadas
 
     //Preenher as carrinhas com as encomendas
     for(auto truck : trucks){
@@ -254,7 +141,7 @@ int main() {
         int temp=preenchertruck(truck,encos,Pedidos);
         //Se temp!=0 quer dizer que Lucro foi positivo ou seja que foram guardadas encomendas na carrinha atual
         if(temp!=0){
-            EstafetaouPedido carrinha(truck.getPesoMax(),truck.getVolMax(),truck.getCusto());//Serve só para inserir nos Estafetas
+            Carrinha carrinha(truck.getVolMax(),truck.getPesoMax(),truck.getCusto());//Serve só para inserir nos Estafetas
             Estafetas.push_back(carrinha);
         }
     }
@@ -264,9 +151,9 @@ int main() {
     int vv=0;  //Guarda a soma do volume total
     int custo=0; // guarda a soma do custo total de todas as carrinhas usadas
     for (int i=0; i<Estafetas.size();i++){
-        pp+=Estafetas.at(i).getPeso();
-        vv+=Estafetas.at(i).getVol();
-        custo+=Estafetas.at(i).getValor();
+        pp+=Estafetas.at(i).getPesoMax();
+        vv+=Estafetas.at(i).getVolMax();
+        custo+=Estafetas.at(i).getCusto();
     }
     cout<<"Nº Estafetas: "<<Estafetas.size()<<" PesoTotal " <<pp<<" Vol total:"<<vv<<" Custo total:"<<custo<<endl;
 
@@ -276,8 +163,9 @@ int main() {
     for (int i = 0; i < Pedidos.size(); i++) {
         pp+=Pedidos.at(i).getPeso();
         vv+=Pedidos.at(i).getVol();
-        recom+=Pedidos.at(i).getValor();
+        recom+=Pedidos.at(i).getRecomp();
     }
+
     cout<<"Nº Pedidos: "<<Pedidos.size()<<" Peso total:"<<pp<<" Vol total:"<<vv<<" Recompensa total:"<<recom<<endl;
     cout<<"Lucro Total="<<recom-custo<<endl;
     cout<<"Eficiencia="<<(Pedidos.size()/(float)TotalEncomendas)*100<<"%"<<endl;
