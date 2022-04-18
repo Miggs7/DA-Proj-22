@@ -46,14 +46,17 @@ int main() {
 
     int temp=28800; // Segundos do periodo 9-17
     float totaltemp=0; //Guarda o tempo total usado pelas encomendas
-
+    int sum=0;
     //Descobrir as encomendas para entrega
     for(int i=0;i<encos.size();i++){
         if(temp-encos.at(i).getDurar()>0){
             temp-=encos.at(i).getDurar();
             Encomenda encomenda(encos.at(i).getVol(),encos.at(i).getPeso(),0,encos.at(i).getDurar()); //Serve só para guardar no vetor Pedido(recompensa nao necessaria)
             Pedidos.push_back(encomenda);
-            totaltemp+=encos.at(i).getDurar();
+           // totaltemp+=encos.at(i).getDurar();
+           sum+=encos.at(i).getDurar();;
+           totaltemp+=sum;
+
         }
     }
 
