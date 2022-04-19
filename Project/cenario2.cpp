@@ -88,8 +88,8 @@ int main() {
     vector<Encomenda> encos;//Vetor para guardar todas as encomendas
     vector<Carrinha> trucks;//Vetor para guardar todas as carrinhas
 
-    string encomendasfile("encomendas.txt");//Ficheiro com as encomendas
-    string carrinhasfile("carrinhas.txt");//Ficheiro com as carrinhas
+    string encomendasfile("encomendas3.txt");//Ficheiro com as encomendas
+    string carrinhasfile("carrinhas3.txt");//Ficheiro com as carrinhas
     string line;
 
     ifstream input_file(encomendasfile);

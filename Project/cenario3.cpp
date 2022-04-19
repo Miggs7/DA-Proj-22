@@ -18,7 +18,7 @@ bool compararEnc(Encomenda a, Encomenda b){
 int main() {
     vector<Encomenda> encos;//vetor para armazenar as encomendas
 
-    string encomendasfile("encomendas.txt"); //Ficheiro onde se encontram os dados
+    string encomendasfile("encomendas4.txt"); //Ficheiro onde se encontram os dados
     string line;
     ifstream input_file(encomendasfile);
     //Verificar se a stream está associada a um ficheiro
@@ -49,7 +49,7 @@ int main() {
     int sum=0;
     //Descobrir as encomendas para entrega
     for(int i=0;i<encos.size();i++){
-        if(temp-encos.at(i).getDurar()>0){
+        if(temp-encos.at(i).getDurar()>=0){
             temp-=encos.at(i).getDurar();
             Encomenda encomenda(encos.at(i).getVol(),encos.at(i).getPeso(),0,encos.at(i).getDurar()); //Serve só para guardar no vetor Pedido(recompensa nao necessaria)
             Pedidos.push_back(encomenda);
