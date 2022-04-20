@@ -1,0 +1,3 @@
+Nº Estafetas: 2 PesoTotal: 59 Vol total:59
+Nº Pedidos: 4 Peso total:28 Vol total:59
+Eficiencia=36.3636%
