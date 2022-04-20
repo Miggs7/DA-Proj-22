@@ -3,22 +3,14 @@
 #include<algorithm>
 #include <fstream>
 #include <cstring>
-#include "info.hpp"
+#include "cenario3.hpp"
 
 using namespace std;
 
-//! Compara a duração das encomendas
-//! \param a- 1º encomenda
-//! \param b- 2º encomenda
-//! \return true- se duração de "a" menor ou igual à duração de "b"
-//! \return false- se duração de "a" maior que duração de "b"
-bool compararEnc(Encomenda a, Encomenda b){
-    return(a.getDurar()<=b.getDurar());
-}
 int main() {
     vector<Encomenda> encos;//vetor para armazenar as encomendas
 
-    string encomendasfile("encomendas4.txt"); //Ficheiro onde se encontram os dados
+    string encomendasfile("encomendas.txt"); //Ficheiro onde se encontram os dados
     string line;
     ifstream input_file(encomendasfile);
     //Verificar se a stream está associada a um ficheiro
