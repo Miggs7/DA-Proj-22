@@ -1,0 +1,27 @@
+Dando entrada aos vetores das Encomendas e Carrinhas, chamamos a função escolhertruck(), verificamos se as encomendas do nosso vector são legíveis para serem transportadas pela carrinha escolhida no momento.
+Após a sua execução, é guardado nos vetores de saida dados relacionados ao total de encomendas que transportaram.
+Sendo o tamanho desse vector a solução para o nosso problema.
+
+
+
+procedure FitsInTruck(Carrinha c,Encomenda e) //O(1)
+    if ((c.VolAtual-e.Vol)>=0 AND (c.PesoAtual-e.Peso)>=0)
+        c.Volatual <-c.Volatual-e.Vol
+        c.Pesoatual <- c.Pesoatual-e.Peso
+        return 1
+
+    return 0     
+
+for each c ∈ C do // O(n)
+    flag <-0
+        for each e ∈ E do // O(n) 
+            if FitsInTruck(c,e) then 
+                    P.push_back({e.peso,e.vol}) // O(1)
+                    E.erase(e); // O(n)
+                    flag <- 1
+
+    if flag == 1 then
+        Est.pushback(c.peso,c.vol)               
+
+
+

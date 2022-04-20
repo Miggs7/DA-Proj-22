@@ -1,0 +1,60 @@
+
+
+procedure Preenchertruck2(Carrinha c, Vector E, Vector P){
+
+    int BV[E.size+1][c.Peso+1][c.Vol+1]<-{0}
+    
+    for (item<-1; i<=E.size; i++) do
+        for peso<-0 to c.Peso do 
+            for vol<-0 to c.Vol
+                BV[item][peso][vol]<- B[item-1][peso][vol]
+                if((peso >= E[item-1].Peso) AND (vol >= E[item-1].Vol) AND (BV[item][peso][vol] < BV[item-1][peso-E[item-1].Peso][vol-E[item-1].Vol] + E[item-1].Recompensa)) then
+                    BV[item][peso][vol]<- BV[item-1][peso-E[item-1].Peso][vol-E[item-1].Vol] + E[item-1].Recompensa
+   
+
+    int n <-E.size
+    int P <- c.Peso
+    int V <- c.Vol
+    int i<-0
+    while n!=0
+        if BV[n][P][V] != B[n-1][P][V] then
+            P=P-E[n-1].Peso
+            V=V-E[n-1].Vol
+	    P.push_back({E[n-1].Peso,E[n-1].Vol})
+           endif
+        n<-n-1
+
+}    
+For each c ∈ C do 
+    temp <- Preenchertruck2(c,E,P)
+    if temp !=0 then
+        Est.push_back({c.Peso,c.Vol,c.Custo})
+
+
+
+ 
+    int n <-E.size
+    int P <- c.Peso
+    int V <- c.Vol
+    int indiceencomendas[E.size]
+    int valorencomendas <-0
+    int i<-0
+    while n!=0
+        if BV[n][P][V] != B[n-1][P][V] then
+            valorencomendas<-E[n-1].Recompensa
+            P=P-E[n-1].Peso
+            V=V-E[n-1].Vol
+            indiceencomendas[i]<-n-1
+        n<-n-1
+    
+    int lucro <- valorencomendas - c.Custo
+    if lucro > 0 then
+        for t<-0 to E.size
+            if indiceencomendas[t]!=0 then
+                Ped.push_back({E[indiceencomendast].Peso,E[indiceencomendas[t]].Vol})
+                E.erase(E[indiceencomendas[t]])
+                for k<-0 to E.size
+                    if indiceencomendas[k]>indiceencomendas[t]
+                        indiceencomendas[k] <- indiceencomendas[k]-1
+    
+    return lucro
