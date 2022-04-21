@@ -1,3 +1,0 @@
-Média:15071.9
-Nº Pedidos: 27 Peso total:493 Vol total:467
-Eficiencia=6%
