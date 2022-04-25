@@ -1,9 +1,13 @@
 
-
-for i in 0 to i<encos.size() do // O(n)
-        if(temp-encos.at(i).getDurar()>0) then
-            Pedido encomenda(encos.at(i).getPeso(),encos.at(i).getVol(),encos.at(i).getDurar()) 
-            Pedidos.push_back(encomenda) O(1) 
+int temp <-28800// segundos do periodo 9-17
+int totaltemp <- 0 //  Guarda o tempo total usado pelas encomendas 
+int sum <-0 //auxiliar
+for each e ∈ Enco do 
+        if(temp-e.Duracao()>0) then
+            temp <- temp-e.Duracao
+	    sum <- sum+e.Duracao
+	    totaltemp <- totaltemp+sum
+            Pedidos.push_back(e) 
         end if
 
 
